@@ -1,0 +1,83 @@
+'.source.cpp':
+  'for':
+    'prefix':'for'
+    'body':"""
+    for (int $1 = 0; $1 < $2; ++$1)
+    {
+      $3
+    }
+    """
+  'vector':
+    'prefix':'vector'
+    'body':'vector<${1:int}>$2'
+  'cout':
+    'prefix':'cout'
+    'body':'cout << $1 << endl;$2'
+  'cin':
+    'prefix':'cin'
+    'body':'cin >> $1;$2'
+  'if':
+    'prefix':'if'
+    'body':"""
+    if ($1)
+    {
+      $2
+    }
+    """
+  'else':
+    'prefix':'else'
+    'body':"""
+    else
+    {
+      $1
+    }
+    """
+  'while':
+    'prefix':'while'
+    'body':"""
+    while ($1)
+    {
+      $2
+    }
+    """
+
+'.source.python':
+  'print':
+    'prefix':'print'
+    'body':'print($1)$2'
+  'if':
+    'prefix':'if'
+    'body':"""
+    if $1:
+        $2
+    """
+  'elif':
+    'prefix':'elif'
+    'body':"""
+    elif $1:
+        $2
+    """
+  'else':
+    'prefix':'else'
+    'body':"""
+    else:
+        $1
+    """
+  'input':
+    'prefix':'input'
+    'body':'input()'
+  'map':
+    'prefix':'map'
+    'body':'map(int, input().split())$2'
+  'for':
+    'prefix':'for'
+    'body':"""
+    for $1 in range($2):
+        $3
+      """
+  'while':
+    'prefix':'while'
+    'body':"""
+    while $1:
+        $2
+      """
