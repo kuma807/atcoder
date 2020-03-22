@@ -1,0 +1,14 @@
+set number
+set expandtab
+set hlsearch
+set incsearch
+set laststatus=2
+syntax on
+set match
+set autoindent
+set background=dark
+set cursorline
+set tabstop=4
+set smartindent
+set shiftwidth=4
+set whichwrap=b,s,[,],<,>
