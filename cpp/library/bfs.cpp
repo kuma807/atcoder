@@ -14,8 +14,8 @@
 // ========================================
 
 auto wall = "#";
-//=============dfs============================
-int dfs(vector<vector<char>> maze, pair<int, int> start, pair<int, int> end)
+//=============bfs============================
+int bfs(vector<vector<char>> maze, pair<int, int> start, pair<int, int> end)
 {
   queue<tuple<int, int, int>> q;
   vector<vector<int>> already_went(maze.size(), vector<int>(maze.at(0).size(), 0));
