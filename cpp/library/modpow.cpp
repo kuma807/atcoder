@@ -1,16 +1,16 @@
 // ============how it works=================
 // input:
-  // long long a:
-  // long long n:
-  // long long mod:
+  // ll a:
+  // ll n:
+  // ll mod:
 
 // output: a ^ n (mod = mod)　を返す
 // ========================================
 
 //=============modpow============================
-long long modpow(long long a, long long n, long long mod)
+ll modpow(ll a, ll n, ll mod)
 {
-    long long res = 1;
+    ll res = 1;
     while (n > 0)
     {
         if (n & 1) res = res * a % mod;

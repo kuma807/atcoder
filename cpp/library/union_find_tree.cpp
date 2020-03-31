@@ -3,25 +3,25 @@ using namespace std;
 // ============need input=================
 // MAX_N
 // need to call init()
-// int n:
+// ll n:
   //number of nodes
 // ========================================
 
 // ============union_find_tree===============
-int MAX_N = -1;
-vector<int> par(MAX_N);//MAX_N == num of node
-vector<int> tree_rank(MAX_N);
+ll MAX_N = -1;
+vector<ll> par(MAX_N);//MAX_N == num of node
+vector<ll> tree_rank(MAX_N);
 
-void init(int n)
+void init(ll n)
 {
-  for (int i = 0; i < n; ++i)
+  for (ll i = 0; i < n; ++i)
   {
     par.at(i) = i;
     tree_rank.at(i) = 0;
   }
 }
 
-int find(int x)
+ll find(ll x)
 {
   if (par.at(x) == x)
   {
@@ -33,7 +33,7 @@ int find(int x)
   }
 }
 
-void unite(int x, int y)
+void unite(ll x, ll y)
 {
   x = find(x);
   y = find(y);
@@ -55,7 +55,7 @@ void unite(int x, int y)
   }
 }
 
-bool same(int x, int y)
+bool same(ll x, ll y)
 {
   return find(x) == find(y);
 }

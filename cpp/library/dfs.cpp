@@ -14,7 +14,7 @@
 // ========================================
 
 auto wall = "#";
-//=============dijkstra============================
+//=============dfs============================
 int dfs(vector<vector<char>> maze, pair<int, int> start, pair<int, int> end)
 {
   queue<tuple<int, int, int>> q;

@@ -1,12 +1,12 @@
 // ============how it works=================
 // input:
-  // ll a: aの逆元を求める
-  // ll m: mod
-    // a　と m は互いに素でなければならない
+  //ll n
+  //ll k
+    //nCk
+  //ll mod: mod
 // output:
-  // ll u: a　の逆元
+  //nCk
 // ========================================
-
 
 //=============modinv============================
 ll modinv(ll a, ll m) {
@@ -20,11 +20,22 @@ ll modinv(ll a, ll m) {
     if (u < 0) u += m;
     return u;
 }
+//=================================================
 
-int main() {
-    // mod. 13 での逆元を求めてみる
-    for (int i = 1; i < 13; ++i) {
-        cout << i << " 's inv: " << modinv(i, 13) << endl;
-    }
+//=============modcom============================
+ll modcom(ll n, ll k, ll mod)
+{
+  k = min(k, n - k);
+  ll up = 1;
+  for (ll i = n - k + 1; i < n + 1; ++i)
+  {
+    up = (up * i) % mod;
+  }
+  ll down = 1;
+  for (ll i = 2; i < k + 1; ++i)
+  {
+    down = (down * modinv(i, mod)) % mod;
+  }
+  return (up * down) % mod;
 }
 //=================================================
