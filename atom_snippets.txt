@@ -1,10 +1,31 @@
 '.source.cpp':
+  '--main':
+    'prefix':'--main'
+    'body':"""
+    #include <bits/stdc++.h>
+    #define INF 5000000000000000000
+    #define ll long long
+    #define pll pair<ll, ll>
+    using namespace std;
+
+    int main()
+    {
+      $0
+    }
+
+    """
   'for':
     'prefix':'for'
     'body':"""
-    for (ll $1 = 0; $1 < $2; ++$1)
-    {
+    for (ll $1 = 0; $1 < $2; ++$1) {
       $3
+    }
+    """
+  '--for':
+    'prefix':'--for'
+    'body':"""
+    for (ll $1 = $2; $1 >= $3; --$1) {
+      $4
     }
     """
   'vector':
@@ -12,31 +33,28 @@
     'body':'vector<${1:ll}>$2'
   'cout':
     'prefix':'cout'
-    'body':'cout << $1 << endl;$2'
+    'body':'cout << $1 << "\n";$2'
   'cin':
     'prefix':'cin'
     'body':'cin >> $1;$2'
   'if':
     'prefix':'if'
     'body':"""
-    if ($1)
-    {
+    if ($1) {
       $2
     }
     """
   'else':
     'prefix':'else'
     'body':"""
-    else
-    {
+    else {
       $1
     }
     """
   'while':
     'prefix':'while'
     'body':"""
-    while ($1)
-    {
+    while ($1) {
       $2
     }
     """
