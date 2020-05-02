@@ -33,7 +33,7 @@
     'body':'vector<${1:ll}>$2'
   'cout':
     'prefix':'cout'
-    'body':'cout << $1 << "\n";$2'
+    'body':'cout << $1 << "${2:\\\\n}";$3'
   'cin':
     'prefix':'cin'
     'body':'cin >> $1;$2'
