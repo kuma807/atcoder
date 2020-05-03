@@ -3,39 +3,38 @@
   //ll n
   //ll k
     //nCk
-  //ll mod: mod
+  //ll MAX
+    //max(n, k)
+  //ll MOD
 // output:
   //nCk
 // ========================================
 
+const ll MAX = 510010;
+const ll MOD = 1000000007;
+vector<ll> fac(MAX), finv(MAX), inv(MAX);
+bool init_called = false;
 //=============modinv============================
-ll modinv(ll a, ll m) {
-    ll b = m, u = 1, v = 0;
-    while (b) {
-        ll t = a / b;
-        a -= t * b; swap(a, b);
-        u -= t * v; swap(u, v);
-    }
-    u %= m;
-    if (u < 0) u += m;
-    return u;
+void COMinit() {
+  init_called = true;
+  fac.at(0) = 1;
+  fac.at(1) = 1;
+  finv.at(0) = 1;
+  finv.at(1) = 1;
+  inv.at(1) = 1;
+  for (ll i = 2; i < MAX; i++){
+    fac.at(i) = fac.at(i - 1) * i % MOD;
+    inv.at(i) = MOD - inv.at(MOD % i) * (MOD / i) % MOD;
+    finv.at(i) = finv.at(i - 1) * inv.at(i) % MOD;
+  }
 }
-//=================================================
 
-//=============modcom============================
-ll modcom(ll n, ll k, ll mod)
-{
-  k = min(k, n - k);
-  ll up = 1;
-  for (ll i = n - k + 1; i < n + 1; ++i)
-  {
-    up = (up * i) % mod;
+ll COM(ll n, ll k){
+  if (!init_called) {
+    COMinit();
   }
-  ll down = 1;
-  for (ll i = 2; i < k + 1; ++i)
-  {
-    down = (down * modinv(i, mod)) % mod;
-  }
-  return (up * down) % mod;
+  if (n < k) return 0;
+  if (n < 0 || k < 0) return 0;
+  return fac.at(n) * (finv.at(k) * finv.at(n - k) % MOD) % MOD;
 }
 //=================================================
