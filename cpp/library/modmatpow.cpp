@@ -1,9 +1,17 @@
-#include <bits/stdc++.h>
-#define INF 5000000000000000000
-#define ll long long
-#define pll pair<ll, ll>
-using namespace std;
+// ============how it works=================
+// input:
+  // vector<vector<ll>> a
+    //正方行列
+  // ll power
+    //何乗にするか
+  // ll mod
+// output:
+  // vector<vector<ll>> res
+    //　正方行列aのn乗のmod
+// ========================================
 
+
+//=============modmatpow============================
 vector<vector<ll>> modmatmul(vector<vector<ll>>& a, vector<vector<ll>>& b, ll mod)
 {
   vector<vector<ll>> res(a.size(), vector<ll>(b.at(0).size()));
@@ -34,14 +42,4 @@ vector<vector<ll>> modmatpow(vector<vector<ll>> a, ll power, ll mod)
   }
   return res;
 }
-
-int main()
-{
-  ll N, mod;
-  cin >> N >> mod;
-  vector<vector<ll>> matrix = {{0, 1}, {1, 1}};
-  vector<vector<ll>> F = {{0}, {1}};
-  matrix = modmatpow(matrix, N - 2, mod);
-  vector<vector<ll>> ans = modmatmul(matrix, F, mod);
-  cout << ans.at(1).at(0) << "\n";
-}
+//=================================================

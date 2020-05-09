@@ -10,7 +10,7 @@
 
 #define INF 100000000
 //=============warshall_floyd============================
-vector<vector<ll>>  warshall_floyd(ll V, vector<vector<ll>> d)
+void  warshall_floyd(ll V, vector<vector<ll>>& d)
 {
   for (ll k = 0; k < V; ++k)
   {
@@ -22,6 +22,5 @@ vector<vector<ll>>  warshall_floyd(ll V, vector<vector<ll>> d)
       }
     }
   }
-  return d;
 }
 //=================================================
