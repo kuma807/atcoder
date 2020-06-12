@@ -20,11 +20,4 @@ ll modinv(ll a, ll m) {
     if (u < 0) u += m;
     return u;
 }
-
-int main() {
-    // mod. 13 での逆元を求めてみる
-    for (int i = 1; i < 13; ++i) {
-        cout << i << " 's inv: " << modinv(i, 13) << endl;
-    }
-}
 //=================================================

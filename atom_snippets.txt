@@ -8,10 +8,26 @@
     #define pll pair<ll, ll>
     using namespace std;
 
-    int main()
-    {
+    int main() {
       $0
     }
+
+    """
+  '__topcoder':
+    'prefix':'__topcoder'
+    'body':"""
+    #include <bits/stdc++.h>
+    #define INF 5000000000000000000
+    #define ll long long
+    #define pll pair<ll, ll>
+    using namespace std;
+
+    class $1 {
+    public:
+      int $2($3) {
+        $4
+      }
+    };
 
     """
   'for':

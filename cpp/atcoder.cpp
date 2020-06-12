@@ -4,44 +4,101 @@
 #define pll pair<ll, ll>
 using namespace std;
 
-vector<vector<ll>> modmatmul(vector<vector<ll>>& a, vector<vector<ll>>& b, ll mod)
-{
-  vector<vector<ll>> res(a.size(), vector<ll>(b.at(0).size()));
-  for (ll row = 0; row < a.size(); ++row) {
-    for (ll colom = 0; colom < b.at(0).size(); ++colom) {
-      ll sum = 0;
-      for (ll i = 0; i < b.size(); ++i) {
-        sum = (sum  + a.at(row).at(i) * b.at(i).at(colom) % mod) % mod;
+vector<vector<ll>> mk_block(string& S, vector<ll>& A) {
+  vector<vector<ll>> res = {};
+  bool start = false;
+  char before = '1';
+  vector<ll> temp = {};
+  for (ll i = 0; i < S.size(); ++i) {
+    if (!start && S[i] == '0') {
+      continue;
+    }
+    else {
+      start = true;
+    }
+    if (S[i] == before) {
+      temp.push_back(A.at(i));
+    }
+    else {
+      res.push_back(temp);
+      temp = {};
+      temp.push_back(A.at(i));
+    }
+    before = S[i];
+  }
+  if (start && (temp.size() != 0)) {
+    res.push_back(temp);
+  }
+  return res;
+}
+
+int main() {
+  ll T;
+  cin >> T;
+  for (ll testcase = 0; testcase < T; ++testcase) {
+    bool zero = true;
+    ll N;
+    cin >> N;
+    vector<ll> A(N);
+    for (ll i = 0; i < N; ++i) {
+      cin >> A.at(i);
+    }
+    string S;
+    cin >> S;
+    if (S[N - 1] == '1') {
+      cout << 1 << "\n";
+      continue;
+    }
+    vector<vector<ll>> block = mk_block(S, A);
+    if (block.size() == 0) {
+      cout << 0 << "\n";
+      continue;
+    }
+    vector<ll> roof(block.size());
+    for (ll i = 0; i < block.size(); ++i) {
+      ll M = 0;
+      for (ll j = 0; j < block.at(i).size(); ++j) {
+        M = max(block.at(i).at(j), M);
       }
-      res.at(row).at(colom) = sum;
+      ll roof_M = 1;
+      while (roof_M <= M) {
+        roof_M *= 2;
+      }
+      roof.at(i) = roof_M - 1;
     }
-  }
-  return res;
-}
-
-vector<vector<ll>> modmatpow(vector<vector<ll>> a, ll power, ll mod)
-{
-  vector<vector<ll>> res(a.size(), vector<ll>(a.size(), 0));
-  for (ll i = 0; i < a.size(); ++i) {
-    res.at(i).at(i) = 1;
-  }
-  while (power) {
-    if (power & 1) {
-      res = modmatmul(a, res, mod);
+    ll check = roof.at(0);
+    for (ll i = 0; i < block.size() / 2; ++i) {
+      unordered_map<ll, bool> mp;
+      for (ll j = 0; j < block.at(i * 2 + 1).size(); ++j) {
+        mp[block.at(i * 2 + 1).at(j)] = true;
+      }
+      for (ll j = 0; j < block.at(i * 2).size(); ++j) {
+        ll now = block.at(i * 2).at(j);
+        if (mp[now] || mp[now ^ roof.at(i)]) {
+          continue;
+        }
+        zero = false;
+        break;
+      }
+      if (!zero) {
+        break;
+      }
     }
-    a = modmatmul(a, a, mod);
-    power = (power >> 1);
+    if (zero) {
+      cout << 0 << "\n";
+    }
+    else {
+      cout << 1 << "\n";
+    }
+    // for (ll i = 0; i < roof.size(); ++i) {
+    //   cout << roof.at(i) << "\n";
+    // }
+    // for (ll i = 0; i < block.size(); ++i) {
+    //   for (ll j = 0; j < block.at(i).size(); ++j) {
+    //     cout << block.at(i).at(j) << " ";
+    //   }
+    //   cout << "\n";
+    // }
+    // break;
   }
-  return res;
-}
-
-int main()
-{
-  ll N, mod;
-  cin >> N >> mod;
-  vector<vector<ll>> matrix = {{0, 1}, {1, 1}};
-  vector<vector<ll>> F = {{0}, {1}};
-  matrix = modmatpow(matrix, N - 2, mod);
-  vector<vector<ll>> ans = modmatmul(matrix, F, mod);
-  cout << ans.at(1).at(0) << "\n";
 }
