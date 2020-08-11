@@ -1,0 +1,5 @@
+//cout精度
+cout << fixed << setprecision(15) << y << endl;
+
+//連続する要素を一つにする
+X.erase(unique(X.begin(), X.end()), X.end());
