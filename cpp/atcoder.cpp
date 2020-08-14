@@ -1,104 +1,72 @@
 #include <bits/stdc++.h>
-#define INF 5000000000000000000
+#define INF 2000000000000000000
 #define ll long long
-#define pll pair<ll, ll>
 using namespace std;
 
-vector<vector<ll>> mk_block(string& S, vector<ll>& A) {
-  vector<vector<ll>> res = {};
-  bool start = false;
-  char before = '1';
-  vector<ll> temp = {};
-  for (ll i = 0; i < S.size(); ++i) {
-    if (!start && S[i] == '0') {
-      continue;
+ll temp = pow(2, 32) - 1;
+//=============matpow============================
+vector<vector<ll>> matmul(vector<vector<ll>>& a, vector<vector<ll>>& b)
+{
+  vector<vector<ll>> res(a.size(), vector<ll>(b.at(0).size()));
+  for (ll row = 0; row < a.size(); ++row) {
+    for (ll colom = 0; colom < b.at(0).size(); ++colom) {
+      ll sum = 0;
+      for (ll i = 0; i < b.size(); ++i) {
+        sum = (sum ^ (a.at(row).at(i) & b.at(i).at(colom)));
+      }
+      res.at(row).at(colom) = sum;
     }
-    else {
-      start = true;
-    }
-    if (S[i] == before) {
-      temp.push_back(A.at(i));
-    }
-    else {
-      res.push_back(temp);
-      temp = {};
-      temp.push_back(A.at(i));
-    }
-    before = S[i];
-  }
-  if (start && (temp.size() != 0)) {
-    res.push_back(temp);
   }
   return res;
 }
 
-int main() {
-  ll T;
-  cin >> T;
-  for (ll testcase = 0; testcase < T; ++testcase) {
-    bool zero = true;
-    ll N;
-    cin >> N;
-    vector<ll> A(N);
-    for (ll i = 0; i < N; ++i) {
-      cin >> A.at(i);
-    }
-    string S;
-    cin >> S;
-    if (S[N - 1] == '1') {
-      cout << 1 << "\n";
-      continue;
-    }
-    vector<vector<ll>> block = mk_block(S, A);
-    if (block.size() == 0) {
-      cout << 0 << "\n";
-      continue;
-    }
-    vector<ll> roof(block.size());
-    for (ll i = 0; i < block.size(); ++i) {
-      ll M = 0;
-      for (ll j = 0; j < block.at(i).size(); ++j) {
-        M = max(block.at(i).at(j), M);
-      }
-      ll roof_M = 1;
-      while (roof_M <= M) {
-        roof_M *= 2;
-      }
-      roof.at(i) = roof_M - 1;
-    }
-    ll check = roof.at(0);
-    for (ll i = 0; i < block.size() / 2; ++i) {
-      unordered_map<ll, bool> mp;
-      for (ll j = 0; j < block.at(i * 2 + 1).size(); ++j) {
-        mp[block.at(i * 2 + 1).at(j)] = true;
-      }
-      for (ll j = 0; j < block.at(i * 2).size(); ++j) {
-        ll now = block.at(i * 2).at(j);
-        if (mp[now] || mp[now ^ roof.at(i)]) {
-          continue;
-        }
-        zero = false;
-        break;
-      }
-      if (!zero) {
-        break;
-      }
-    }
-    if (zero) {
-      cout << 0 << "\n";
-    }
-    else {
-      cout << 1 << "\n";
-    }
-    // for (ll i = 0; i < roof.size(); ++i) {
-    //   cout << roof.at(i) << "\n";
-    // }
-    // for (ll i = 0; i < block.size(); ++i) {
-    //   for (ll j = 0; j < block.at(i).size(); ++j) {
-    //     cout << block.at(i).at(j) << " ";
-    //   }
-    //   cout << "\n";
-    // }
-    // break;
+vector<vector<ll>> matpow(vector<vector<ll>> a, ll power)
+{
+  vector<vector<ll>> res(a.size(), vector<ll>(a.size(), 0));
+  for (ll i = 0; i < a.size(); ++i) {
+    res.at(i).at(i) = temp;
   }
+  while (power) {
+    if (power & 1) {
+      res = matmul(a, res);
+    }
+    a = matmul(a, a);
+    power = (power >> 1);
+  }
+  return res;
+}
+//=================================================
+
+int main() {
+  ios::sync_with_stdio(false);
+  cin.tie(nullptr);
+  ll K, M;
+  cin >> K >> M;
+  vector<vector<ll>> A(K, vector<ll>(1));
+  for (ll i = 0; i < K; ++i) {
+    cin >> A.at(i).at(0);
+  }
+  vector<vector<ll>> C(K, vector<ll>(K, 0));
+  for (ll i = 0; i < K - 1; ++i) {
+    C.at(i).at(i + 1) = temp;
+  }
+  for (ll i = 0; i < K; ++i) {
+    cin >> C.at(K - 1).at(K - 1 - i);
+  }
+  // for (ll i = 0; i < C.size(); ++i) {
+  //   for (ll j = 0; j < C.at(0).size(); ++j) {
+  //     cout << C.at(i).at(j) << " ";
+  //   }
+  //   cout << "\n";
+  // }
+  // cout << "\n";
+  C = matpow(C, M - 1);
+  // for (ll i = 0; i < C.size(); ++i) {
+  //   for (ll j = 0; j < C.at(0).size(); ++j) {
+  //     cout << C.at(i).at(j) << " ";
+  //   }
+  //   cout << "\n";
+  // }
+  A = matmul(C, A);
+  cout << A.at(0).at(0) << "\n";
 }
