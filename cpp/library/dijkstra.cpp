@@ -14,14 +14,12 @@
     //Vは頂点数
 // ========================================
 
-#define INF 1000000000
 struct edge {ll to, cost;};
-
 //=============dijkstra============================
-vector<long long> dijkstra(ll s, ll V, vector<vector<edge>> G)
+vector<ll> dijkstra(ll s, ll V, vector<vector<edge>>& G)
 {
-  vector<long long> d(V, INF);
-  typedef pair<long long, ll> P;// first は最短距離　second は頂点の番号
+  vector<ll> d(V, INF);
+  typedef pair<ll, ll> P;// first は最短距離　second は頂点の番号
   priority_queue<P, vector<P>, greater<P>> que;
   d.at(s) = 0;
   que.push(P(0, s));
