@@ -3,6 +3,7 @@
   // ll N:Nを素因数分解する
 // output:
   // vector<pll> res:pow(first, second)がNの約数
+//Nの値が大きくfast_prime_factorが使えないときに使う
 // ========================================
 
 

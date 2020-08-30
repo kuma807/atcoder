@@ -9,3 +9,17 @@ map<ll, ll> mp;
 for (const auto& [key, value] : mp){
   std::cout << key << " => " << value << "\n";
 }
+
+//sort
+bool compare(vector<int> a, vector<int> b) {
+  return a.at(1) <= b.at(1);
+}
+sort(ab.begin(), ab.end(), compare);
+
+//popcount
+__builtin_popcountll
+
+//bitset
+bitset<250000> a;
+a.set(x);
+a.reset(x);
