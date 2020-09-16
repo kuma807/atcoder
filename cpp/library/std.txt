@@ -2,12 +2,17 @@
 cout << fixed << setprecision(15) << y << endl;
 
 //連続する要素を一つにする
+sort(X.begin(), X.end());
 X.erase(unique(X.begin(), X.end()), X.end());
 
 //map for文
 map<ll, ll> mp;
 for (const auto& [key, value] : mp){
   std::cout << key << " => " << value << "\n";
+}
+
+//set for文
+for(auto itr = st.begin(); itr != st.end(); ++itr) {
 }
 
 //sort

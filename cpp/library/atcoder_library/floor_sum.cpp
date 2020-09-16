@@ -1,8 +1,11 @@
-#include <bits/stdc++.h>
-#define INF 2000000000000000000
-#define ll long long
-#define pll pair<ll, ll>
-using namespace std;
+// ============need input=================
+//格子点の数(下の境界は含まれない)
+//input
+  //n, m, a, b
+//output
+  //(i = 0, n - 1)∑ floor((a×i+b) / m)を返す
+// ========================================
+
 // ===========floor_sum================
 ll floor_sum(ll n, ll m, ll a, ll b) {
     ll ans = 0;
@@ -22,6 +25,25 @@ ll floor_sum(ll n, ll m, ll a, ll b) {
     return ans;
 }
 // =======================================
+
+//未確定
+ll ceil_sum(ll n, ll m, ll a, ll b) {
+  return floor_sum(n, m, a, b + m - 1);
+}
+ll floor_sum_with_out_boundary(ll n, ll m, ll a, ll b) {
+  //floor_sumから上の境界線を除く
+  ll h = (a * (n - 1) + b + m) / m;
+  ll all = n * h;
+  ll minus = floor_sum(n, m, a, m - (a * (n - 1) + b) % m);
+  ll res = all - minus;
+  if (b != 0) {
+    res -= n;
+  }
+  else if (b == 0 && a != 0) {
+    res -= n - 1;
+  }
+  return res;
+}
 ll boundary_sum(ll n, ll m, ll a, ll b) {
   //上の境界線上の格子点の数を返す
   ll h = (a * (n - 1) + b + m) / m;
@@ -30,13 +52,4 @@ ll boundary_sum(ll n, ll m, ll a, ll b) {
   ll down = floor_sum(n, m, a, b + m);
   ll res = (up + down) - all;
   return res;
-}
-
-int main() {
-  ios::sync_with_stdio(false);
-  cin.tie(nullptr);
-  ll n, m, a, b;
-  cin >> n >> m >> a >> b;
-  cout << floor_sum(n, m, a, b) << "\n";
-  cout << boundary_sum(n, m, a, b) << "\n";
 }
