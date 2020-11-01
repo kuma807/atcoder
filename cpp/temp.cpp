@@ -1,20 +1,34 @@
 #include <bits/stdc++.h>
+//#include <atcoder/all>
+//using namespace atcoder;
 #define INF 2000000000000000000
 #define ll long long
+#define ld long double
 #define pll pair<ll, ll>
 using namespace std;
 
 int main() {
   ios::sync_with_stdio(false);
   cin.tie(nullptr);
-  ll T;
-  cin >> T;
-  for (ll testcase = 0; testcase < T; ++testcase) {
-    ll x, y, k;
-    cin >> x >> y >> k;
-    ll need = (k * (1 + y) - 1);
-    ll ans = (need + x - 2) / (x - 1);
-    ne
-    cout << ans << "\n";
+  ll N = 6;
+  vector<ll> A(N);
+  for (ll i = 0; i < N; ++i) {
+    cin >> A.at(i);
+  }
+  ll M;
+  cin >> M;
+  vector<ll> B(M);
+  for (ll i = 0; i < M; ++i) {
+    cin >> B.at(i);
+  }
+  sort(A.begin(), A.end());
+  sort(B.begin(), B.end());
+  vector<vector<ll>> fret(M, vector<ll>(N));
+  for (ll i = 0; i < M; ++i) {
+    for (ll j = 0; j < N; ++j) {
+      fret.at(i).at(j) = B.at(i) - A.at(j);
+      cout << fret.at(i).at(j) << " ";
+    }
+    cout << "\n";
   }
 }

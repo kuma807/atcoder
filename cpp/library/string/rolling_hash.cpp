@@ -45,3 +45,22 @@ vector<bool> rolling_hash(string a, string b) {
   return res;
 }
 //=================================================
+
+
+
+
+//=========end===================
+typedef unsigned long long ull;
+const ull B = 1000000007;
+//=============rolling_hash============================
+pair<ull, ull> rolling_hash(string& a, ll len) {
+    ll al = a.size();
+    ull t = 1;
+    ull ah = 0;
+    for (ll i = 0; i < len; ++i) {
+      ah = ah * B + a[i];
+      t *= B;
+    }
+    return {ah, t};
+}
+//=================================================

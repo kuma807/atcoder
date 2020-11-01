@@ -1,12 +1,14 @@
-#include <bits/stdc++.h>
-#define INF 5000000000000000000
-#define ll long long
-#define ld long double
-#define pll pair<ll, ll>
-using namespace std;
+// ============how it works=================
+// call call init()
+// right_side[{前面, 上面}] = 右面
+
+//roll(pll stat, vector<ll> w)
+  //stat {前面, 上面}, w = {dx, dy}
+  //wの方向に転がしたときのstatを更新する
+// ========================================
 
 //=============dice============================
-vector<vector<ll>> way = {{0, 1}, {1, 0}, {0, -1}, {-1, 0}};
+vector<vector<ll>> way_to_roll = {{0, 1}, {1, 0}, {0, -1}, {-1, 0}};
 //first == front
 map<pll, ll> right_side;//{front, top}
 bool called_init = false;
@@ -25,15 +27,15 @@ void roll(pll& stat, vector<ll> w) {
   if (!called_init) {
     init();
   }
-  if (w == way.at(0)) {
+  if (w == way_to_roll.at(0)) {
     ll temp1 = 7 - stat.first;
     stat.first = stat.second;
     stat.second = temp1;
   }
-  else if (w == way.at(1)) {
+  else if (w == way_to_roll.at(1)) {
     stat.second = 7 - right_side[stat];
   }
-  else if (w == way.at(2)) {
+  else if (w == way_to_roll.at(2)) {
     ll temp1 = 7 - stat.second;
     stat.second = stat.first;
     stat.first = temp1;
@@ -43,25 +45,3 @@ void roll(pll& stat, vector<ll> w) {
   }
 }
 //=================================================
-
-
-int main() {
-  ios::sync_with_stdio(false);
-  cin.tie(nullptr);
-  while (true) {
-    ll N;
-    cin >> N;
-    if (N == 0) {
-      break;
-    }
-    vector<vector<pll>> board(2 * N + 1, vector<pll>(2 * N + 1, {0, 0}));//hight, top
-    ll sx = N, sy = N;
-    for (ll i = 0; i < N; ++i) {
-      ll t, f;
-      cin >> t >> f;
-      while (true) {
-        bool found = true;
-      }
-    }
-  }
-}

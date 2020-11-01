@@ -28,3 +28,11 @@ __builtin_popcountll
 bitset<250000> a;
 a.set(x);
 a.reset(x);
+
+//変角ソート
+atan2(y, x)//[-π, π]で返す(long double)
+第3,4,1,2の順番で帰ってくる
+
+//文字⇔int
+to_string(A)
+stoi(A)

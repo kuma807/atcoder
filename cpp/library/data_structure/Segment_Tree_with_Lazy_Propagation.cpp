@@ -18,7 +18,7 @@
 // ========================================
 
 //=============Segment_Tree_with_Lazy_Propagation====
-const int MAX_N = 1 << 18;//要変更
+const int MAX_N = 1 << 18;//要変更 2 * 10 ^ 5
 int n;
 vector<ll> dat(2 * MAX_N - 1, 0);//要変更
 vector<ll> lazy(2 * MAX_N - 1, 0);//要変更

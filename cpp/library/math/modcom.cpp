@@ -14,7 +14,7 @@ const ll MAX = 510010;
 const ll mod = 1000000007;
 vector<ll> fac(MAX), finv(MAX), inv(MAX);
 bool init_called = false;
-//=============modinv============================
+//=============modcom============================
 void COMinit() {
   init_called = true;
   fac.at(0) = 1;
