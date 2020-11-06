@@ -10,7 +10,7 @@
   // ll d[MAX_V]: shortest path to each node
 
 //注意:
-  //vector<vector<edge>> G(V, vector<edge>(0));
+  //vector<vector<edge>> G(V);
     //Vは頂点数
 // ========================================
 

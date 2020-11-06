@@ -1,34 +1,36 @@
-#include <bits/stdc++.h>
-//#include <atcoder/all>
-//using namespace atcoder;
-#define INF 2000000000000000000
-#define ll long long
-#define ld long double
-#define pll pair<ll, ll>
-using namespace std;
-
-int main() {
-  ios::sync_with_stdio(false);
-  cin.tie(nullptr);
-  ll N = 6;
-  vector<ll> A(N);
-  for (ll i = 0; i < N; ++i) {
-    cin >> A.at(i);
-  }
-  ll M;
-  cin >> M;
-  vector<ll> B(M);
-  for (ll i = 0; i < M; ++i) {
-    cin >> B.at(i);
-  }
-  sort(A.begin(), A.end());
-  sort(B.begin(), B.end());
-  vector<vector<ll>> fret(M, vector<ll>(N));
-  for (ll i = 0; i < M; ++i) {
-    for (ll j = 0; j < N; ++j) {
-      fret.at(i).at(j) = B.at(i) - A.at(j);
-      cout << fret.at(i).at(j) << " ";
+int counter = 0;
+void loop() {
+  sws[0] = digitalRead(19);
+  //スイッチがついてるなら
+  if (sws[0]) {
+    //表示をクリアする
+    for (i = 1; i < 8; i++) {
+      digitalWrite(i, LOW);
     }
-    cout << "\n";
+
+    if (counter == 0) {
+      //0の表示をする
+      for (i = 1; i < 7; ++i) {
+        digitalWrite(i, HIGH);
+      }
+      counter = 1;
+    }
+    else if (counter == 1) {
+      //1の表示をする
+      for (i = 2; i < 4; ++i) {
+        digitalWrite(i, HIGH);
+      }
+      counter = 2;
+    }
+    else if (counter == 2) {
+      //2の表示をする
+      for (i = 1; i < 8; ++i) {
+        digitalWrite(i, HIGH);
+      }
+      for (ll i = 1; i < 3; ++i) {
+        digitalWrite(i * 3, LOW);
+      }
+      counter = 0;
+    }
   }
 }
