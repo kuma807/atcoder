@@ -1,19 +1,24 @@
 //cout精度
-cout << fixed << setprecision(15) << y << endl;
+cout << fixed << setprecision(15);
 
 //連続する要素を一つにする
 sort(X.begin(), X.end());
-X.erase(unique(X.begin(), X.end()), X.end());
+A.erase(unique(rng(A)), A.end());
 
 //map for文
 map<ll, ll> mp;
 for (const auto& [key, value] : mp){
   std::cout << key << " => " << value << "\n";
 }
+if (mp.find(key) != mp.end()) {
+  //どっかにある
+}
 
 //set for文
 for(auto itr = st.begin(); itr != st.end(); ++itr) {
 }
+//set降順
+set<ll, greater<ll>>
 
 //sort
 bool compare(vector<int> a, vector<int> b) {
@@ -36,3 +41,14 @@ atan2(y, x)//[-π, π]で返す(long double)
 //文字⇔int
 to_string(A)
 stoi(A)
+
+//move
+vector<vector<ll>> moves = {{1, 0}, {0, 1}, {1, 1}};
+
+//-----------marason----------
+//時間測定
+clock_t start = clock();
+clock_t end = clock();
+if ((double)(end - start) / CLOCKS_PER_SEC > time) {
+  break;
+}

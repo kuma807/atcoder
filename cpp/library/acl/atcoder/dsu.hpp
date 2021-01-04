@@ -1,22 +1,16 @@
-// ============need input=================
-//union-find
-// dsu d(N);
-  //サイズNの配列作成
+#ifndef ATCODER_DSU_HPP
+#define ATCODER_DSU_HPP 1
 
-//すべて0index
-//d.merge(a, b)
-  //aとbを連結する void
-//d.same(a, b)
-  //aとbが連結のときtrueをかえす bool
-//d.leader(a)
-  //aが属する連結成分の代表もとを返す int
-//d.size(a)
-  //aの属する連結成分のサイズを返す int
-//d.groups()
-  //グラフを連結成分に分け、その情報を返します。返り値は「「一つの連結成分の頂点番号のリスト」のリスト」です。 (内側外側限らず)vector内でどの順番で頂点が格納されているかは未定義です。  vector<vector<int>>
-// ========================================\
+#include <algorithm>
+#include <cassert>
+#include <vector>
 
-// ===========Disjoint Set Union================
+namespace atcoder {
+
+// Implement (union by size) + (path compression)
+// Reference:
+// Zvi Galil and Giuseppe F. Italiano,
+// Data structures and algorithms for disjoint set union problems
 struct dsu {
   public:
     dsu() : _n(0) {}
@@ -76,4 +70,7 @@ struct dsu {
     // otherwise: parent
     std::vector<int> parent_or_size;
 };
-// =======================================
+
+}  // namespace atcoder
+
+#endif  // ATCODER_DSU_HPP

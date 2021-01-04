@@ -1,26 +1,14 @@
-// ============how it works=================
-//mcf_graph<ll, ll> graph(N)
+#ifndef ATCODER_MINCOSTFLOW_HPP
+#define ATCODER_MINCOSTFLOW_HPP 1
 
-//add_edge
-  //graph.add_edge(from, to, cap, cost)
-//flow
-  //graph.flow(start, tink) pll{流量, cost}
-  //graph.flow(start, tink, flow_limit) pll{流量, cost}
-//get_edge
-  //graph.get_edge(i) edge (from, to, cap, flow, cost)
-  //i番目に追加した辺の状態を取得
-//edges
-  //graph.edges(); vector<edge>
-  //すべての辺の情報
-// ========================================
+#include <algorithm>
+#include <cassert>
+#include <limits>
+#include <queue>
+#include <vector>
 
+namespace atcoder {
 
-//=============mincostflow============================
-struct edge {
-    int from, to;
-    ll cap, flow;
-    ll cost;
-};
 template <class Cap, class Cost> struct mcf_graph {
   public:
     mcf_graph() {}
@@ -39,6 +27,12 @@ template <class Cap, class Cost> struct mcf_graph {
         return m;
     }
 
+    struct edge {
+        int from, to;
+        Cap cap, flow;
+        Cost cost;
+    };
+
     edge get_edge(int i) {
         int m = int(pos.size());
         assert(0 <= i && i < m);
@@ -48,46 +42,46 @@ template <class Cap, class Cost> struct mcf_graph {
             pos[i].first, _e.to, _e.cap + _re.cap, _re.cap, _e.cost,
         };
     }
-    vector<edge> edges() {
+    std::vector<edge> edges() {
         int m = int(pos.size());
-        vector<edge> result(m);
+        std::vector<edge> result(m);
         for (int i = 0; i < m; i++) {
             result[i] = get_edge(i);
         }
         return result;
     }
 
-    pair<Cap, Cost> flow(int s, int t) {
-        return flow(s, t, numeric_limits<Cap>::max());
+    std::pair<Cap, Cost> flow(int s, int t) {
+        return flow(s, t, std::numeric_limits<Cap>::max());
     }
-    pair<Cap, Cost> flow(int s, int t, Cap flow_limit) {
+    std::pair<Cap, Cost> flow(int s, int t, Cap flow_limit) {
         return slope(s, t, flow_limit).back();
     }
-    vector<pair<Cap, Cost>> slope(int s, int t) {
-        return slope(s, t, numeric_limits<Cap>::max());
+    std::vector<std::pair<Cap, Cost>> slope(int s, int t) {
+        return slope(s, t, std::numeric_limits<Cap>::max());
     }
-    vector<pair<Cap, Cost>> slope(int s, int t, Cap flow_limit) {
+    std::vector<std::pair<Cap, Cost>> slope(int s, int t, Cap flow_limit) {
         assert(0 <= s && s < _n);
         assert(0 <= t && t < _n);
         assert(s != t);
         // variants (C = maxcost):
         // -(n-1)C <= dual[s] <= dual[i] <= dual[t] = 0
         // reduced cost (= e.cost + dual[e.from] - dual[e.to]) >= 0 for all edge
-        vector<Cost> dual(_n, 0), dist(_n);
-        vector<int> pv(_n), pe(_n);
-        vector<bool> vis(_n);
+        std::vector<Cost> dual(_n, 0), dist(_n);
+        std::vector<int> pv(_n), pe(_n);
+        std::vector<bool> vis(_n);
         auto dual_ref = [&]() {
-            fill(dist.begin(), dist.end(),
-                      numeric_limits<Cost>::max());
-            fill(pv.begin(), pv.end(), -1);
-            fill(pe.begin(), pe.end(), -1);
-            fill(vis.begin(), vis.end(), false);
+            std::fill(dist.begin(), dist.end(),
+                      std::numeric_limits<Cost>::max());
+            std::fill(pv.begin(), pv.end(), -1);
+            std::fill(pe.begin(), pe.end(), -1);
+            std::fill(vis.begin(), vis.end(), false);
             struct Q {
                 Cost key;
                 int to;
                 bool operator<(Q r) const { return key > r.key; }
             };
-            priority_queue<Q> que;
+            std::priority_queue<Q> que;
             dist[s] = 0;
             que.push(Q{0, s});
             while (!que.empty()) {
@@ -129,13 +123,13 @@ template <class Cap, class Cost> struct mcf_graph {
         };
         Cap flow = 0;
         Cost cost = 0, prev_cost_per_flow = -1;
-        vector<pair<Cap, Cost>> result;
+        std::vector<std::pair<Cap, Cost>> result;
         result.push_back({flow, cost});
         while (flow < flow_limit) {
             if (!dual_ref()) break;
             Cap c = flow_limit - flow;
             for (int v = t; v != s; v = pv[v]) {
-                c = min(c, g[pv[v]][pe[v]].cap);
+                c = std::min(c, g[pv[v]][pe[v]].cap);
             }
             for (int v = t; v != s; v = pv[v]) {
                 auto& e = g[pv[v]][pe[v]];
@@ -163,7 +157,10 @@ template <class Cap, class Cost> struct mcf_graph {
         Cost cost;
     };
 
-    vector<pair<int, int>> pos;
-    vector<vector<_edge>> g;
+    std::vector<std::pair<int, int>> pos;
+    std::vector<std::vector<_edge>> g;
 };
-//=========================================
+
+}  // namespace atcoder
+
+#endif  // ATCODER_MINCOSTFLOW_HPP

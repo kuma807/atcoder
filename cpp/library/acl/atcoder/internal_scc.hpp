@@ -1,15 +1,11 @@
-// ============need input=================
-//scc 有向グラフを強連結成分分解します。
-// scc_graph graph(n)
-  //n 頂点 0 辺の有向グラフを作る
-// add_edge
-  // graph.add_edge(from, to)
-// scc
-  // graph.scc() vector<vector<int>>
-  //以下の条件を満たすような、「頂点のリスト」のリストを返します。全ての頂点がちょうど1つずつ、どれかのリストに含まれます。内側のリストと強連結成分が一対一に対応します。リスト内での頂点の順序は未定義です。リストはトポロジカルソートされています。異なる強連結成分の頂点 u, vu,v について、uu から vv に到達できる時、uu の属するリストは vv の属するリストよりも前です。
-// ========================================\
+#ifndef ATCODER_INTERNAL_SCC_HPP
+#define ATCODER_INTERNAL_SCC_HPP 1
 
-// ===========scc================
+#include <algorithm>
+#include <utility>
+#include <vector>
+
+namespace atcoder {
 namespace internal {
 
 template <class E> struct csr {
@@ -104,21 +100,6 @@ struct scc_graph {
 
 }  // namespace internal
 
-struct scc_graph {
-  public:
-    scc_graph() : internal(0) {}
-    scc_graph(int n) : internal(n) {}
+}  // namespace atcoder
 
-    void add_edge(int from, int to) {
-        int n = internal.num_vertices();
-        assert(0 <= from && from < n);
-        assert(0 <= to && to < n);
-        internal.add_edge(from, to);
-    }
-
-    std::vector<std::vector<int>> scc() { return internal.scc(); }
-
-  private:
-    internal::scc_graph internal;
-};
-// ===========================
+#endif  // ATCODER_INTERNAL_SCC_HPP

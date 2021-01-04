@@ -1,3 +1,16 @@
+#ifndef ATCODER_CONVOLUTION_HPP
+#define ATCODER_CONVOLUTION_HPP 1
+
+#include <algorithm>
+#include <array>
+#include <atcoder/internal_bit>
+#include <atcoder/modint>
+#include <cassert>
+#include <type_traits>
+#include <vector>
+
+namespace atcoder {
+
 namespace internal {
 
 template <class mint, internal::is_static_modint_t<mint>* = nullptr>
@@ -85,23 +98,6 @@ void butterfly_inv(std::vector<mint>& a) {
             inow *= sum_ie[bsf(~(unsigned int)(s))];
         }
     }
-}
-int ceil_pow2(int n) {
-    int x = 0;
-    while ((1U << x) < (unsigned int)(n)) x++;
-    return x;
-}
-
-// @param n `1 <= n`
-// @return minimum non-negative `x` s.t. `(n & (1 << x)) != 0`
-int bsf(unsigned int n) {
-#ifdef _MSC_VER
-    unsigned long index;
-    _BitScanForward(&index, n);
-    return index;
-#else
-    return __builtin_ctz(n);
-#endif
 }
 
 }  // namespace internal
@@ -219,3 +215,7 @@ std::vector<long long> convolution_ll(const std::vector<long long>& a,
 
     return c;
 }
+
+}  // namespace atcoder
+
+#endif  // ATCODER_CONVOLUTION_HPP

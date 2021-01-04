@@ -1,9 +1,14 @@
-// ============need input=================
-//suffix_array
-//vector<int> suffix_array(string s)
-// ========================================\
+#ifndef ATCODER_STRING_HPP
+#define ATCODER_STRING_HPP 1
 
-// ===========string================
+#include <algorithm>
+#include <cassert>
+#include <numeric>
+#include <string>
+#include <vector>
+
+namespace atcoder {
+
 namespace internal {
 
 std::vector<int> sa_naive(const std::vector<int>& s) {
@@ -264,4 +269,7 @@ std::vector<int> z_algorithm(const std::string& s) {
     }
     return z_algorithm(s2);
 }
-// =============================
+
+}  // namespace atcoder
+
+#endif  // ATCODER_STRING_HPP

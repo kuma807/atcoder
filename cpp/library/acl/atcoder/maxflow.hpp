@@ -1,45 +1,15 @@
-// ============how it works=================
-//mf_graph<ll> graph(N)
+#ifndef ATCODER_MAXFLOW_HPP
+#define ATCODER_MAXFLOW_HPP 1
 
-//add_edge
-  //graph.add_edge(from, to, cap)
-//flow
-  //graph.flow(start, tink) ll
-  //graph.flow(start, tink, flow_limit) ll
-//min_cut
-  //flowを呼んだあとにstartから到達可能かどうかを返す
-  //graph.flow(start) vector<bool>
-//get_edge
-  //graph.get_edge(i) edge (from, to, cap, flow)
-  //i番目に追加した辺の状態を取得
-//edges
-  //graph.edges(); vector<edge>
-  //すべての辺の情報
-//change_edge
-  //graph.change_edge(i, new_cap, new_flow)
-  //i番目に追加した辺の容量、流量をnew_cap, new_flowに変換する
-// ========================================
+#include <algorithm>
+#include <atcoder/internal_queue>
+#include <cassert>
+#include <limits>
+#include <queue>
+#include <vector>
 
+namespace atcoder {
 
-//=============max_flow============================
-template <class T> struct simple_queue {
-    vector<T> payload;
-    int pos = 0;
-    void reserve(int n) { payload.reserve(n); }
-    int size() const { return int(payload.size()) - pos; }
-    bool empty() const { return pos == int(payload.size()); }
-    void push(const T& t) { payload.push_back(t); }
-    T& front() { return payload[pos]; }
-    void clear() {
-        payload.clear();
-        pos = 0;
-    }
-    void pop() { pos++; }
-};
-struct edge {
-  int from, to;
-  ll cap, flow;
-};
 template <class Cap> struct mf_graph {
   public:
     mf_graph() : _n(0) {}
@@ -59,6 +29,11 @@ template <class Cap> struct mf_graph {
         return m;
     }
 
+    struct edge {
+        int from, to;
+        Cap cap, flow;
+    };
+
     edge get_edge(int i) {
         int m = int(pos.size());
         assert(0 <= i && i < m);
@@ -66,9 +41,9 @@ template <class Cap> struct mf_graph {
         auto _re = g[_e.to][_e.rev];
         return edge{pos[i].first, _e.to, _e.cap + _re.cap, _re.cap};
     }
-    vector<edge> edges() {
+    std::vector<edge> edges() {
         int m = int(pos.size());
-        vector<edge> result;
+        std::vector<edge> result;
         for (int i = 0; i < m; i++) {
             result.push_back(get_edge(i));
         }
@@ -85,18 +60,18 @@ template <class Cap> struct mf_graph {
     }
 
     Cap flow(int s, int t) {
-        return flow(s, t, numeric_limits<Cap>::max());
+        return flow(s, t, std::numeric_limits<Cap>::max());
     }
     Cap flow(int s, int t, Cap flow_limit) {
         assert(0 <= s && s < _n);
         assert(0 <= t && t < _n);
         assert(s != t);
 
-        vector<int> level(_n), iter(_n);
-        simple_queue<int> que;
+        std::vector<int> level(_n), iter(_n);
+        internal::simple_queue<int> que;
 
         auto bfs = [&]() {
-            fill(level.begin(), level.end(), -1);
+            std::fill(level.begin(), level.end(), -1);
             level[s] = 0;
             que.clear();
             que.push(s);
@@ -119,7 +94,7 @@ template <class Cap> struct mf_graph {
                 _edge& e = g[v][i];
                 if (level_v <= level[e.to] || g[e.to][e.rev].cap == 0) continue;
                 Cap d =
-                    self(self, e.to, min(up - res, g[e.to][e.rev].cap));
+                    self(self, e.to, std::min(up - res, g[e.to][e.rev].cap));
                 if (d <= 0) continue;
                 g[v][i].cap += d;
                 g[e.to][e.rev].cap -= d;
@@ -133,7 +108,7 @@ template <class Cap> struct mf_graph {
         while (flow < flow_limit) {
             bfs();
             if (level[t] == -1) break;
-            fill(iter.begin(), iter.end(), 0);
+            std::fill(iter.begin(), iter.end(), 0);
             while (flow < flow_limit) {
                 Cap f = dfs(dfs, t, flow_limit - flow);
                 if (!f) break;
@@ -143,9 +118,9 @@ template <class Cap> struct mf_graph {
         return flow;
     }
 
-    vector<bool> min_cut(int s) {
-        vector<bool> visited(_n);
-        simple_queue<int> que;
+    std::vector<bool> min_cut(int s) {
+        std::vector<bool> visited(_n);
+        internal::simple_queue<int> que;
         que.push(s);
         while (!que.empty()) {
             int p = que.front();
@@ -167,7 +142,10 @@ template <class Cap> struct mf_graph {
         int to, rev;
         Cap cap;
     };
-    vector<pair<int, int>> pos;
-    vector<vector<_edge>> g;
+    std::vector<std::pair<int, int>> pos;
+    std::vector<std::vector<_edge>> g;
 };
-//=========================================
+
+}  // namespace atcoder
+
+#endif  // ATCODER_MAXFLOW_HPP
