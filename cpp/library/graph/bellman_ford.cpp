@@ -15,7 +15,6 @@
   // if d == {}  負の閉路が存在する
 // ========================================
 
-#define INF 100000000
 //=============belman_ford============================
 struct edge{ll from, to, cost;};
 vector<ll> belman_ford(ll s, ll E, ll V, vector<edge>& es)

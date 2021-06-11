@@ -15,7 +15,7 @@ void init() {
     if (!is_prime.at(i)) {
       continue;
     }
-    ll cnt = 1;
+    ll cnt = 2;
     while (i * cnt < MAX_N) {
       is_prime.at(i * cnt) = false;
       cnt += 1;

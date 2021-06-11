@@ -2,8 +2,10 @@
 cout << fixed << setprecision(15);
 
 //連続する要素を一つにする
-sort(X.begin(), X.end());
-A.erase(unique(rng(A)), A.end());
+void erase_continuous(vector<ll> &A) {
+  sort(rng(A));
+  A.erase(unique(rng(A)), A.end());
+}
 
 //map for文
 map<ll, ll> mp;
