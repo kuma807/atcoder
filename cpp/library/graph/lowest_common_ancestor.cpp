@@ -15,23 +15,23 @@
 
 ll power = 20;
 //=============lowest_common_ancestor============================
-vector<ll> depth;
+vector<ll> depth_lca;
 vector<vector<ll>> doubling;
 bool called_init = false;
 void init(vector<vector<ll>>& connection, ll root) {
-  depth = vector<ll>(connection.size(), -1);
+  depth_lca = vector<ll>(connection.size(), -1);
   doubling = vector<vector<ll>>(power, vector<ll>(connection.size()));
-  depth.at(root) = 0;
+  depth_lca.at(root) = 0;
   doubling.at(0).at(0) = -1;
   queue<ll> q;q.push(root);
   while (!q.empty()) {
     ll now = q.front();q.pop();
-    ll now_d = depth.at(now);
+    ll now_d = depth_lca.at(now);
     for (ll i = 0; i < connection.at(now).size(); ++i) {
-      if (depth.at(connection.at(now).at(i)) != INF) {
+      if (depth_lca.at(connection.at(now).at(i)) != -1) {
         continue;
       }
-      depth.at(connection.at(now).at(i)) = now_d + 1;
+      depth_lca.at(connection.at(now).at(i)) = now_d + 1;
       q.push(connection.at(now).at(i));
       doubling.at(0).at(connection.at(now).at(i)) = now;
     }
@@ -65,7 +65,7 @@ vector<ll> lowest_common_ancestor(vector<vector<ll>>& connection, ll a, ll b, ll
     init(connection, root);
   }
   ll ancestor, distance_between = 0;
-  ll ad = depth.at(a), bd = depth.at(b);
+  ll ad = depth_lca.at(a), bd = depth_lca.at(b);
   if (ad > bd) {
     swap(ad, bd);
     swap(a, b);

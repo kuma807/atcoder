@@ -10,9 +10,12 @@
 
 //=============big_com============================
 ll big_com(ll n, ll r) {
+  if (r <= 0) {
+    return 1;
+  }
   ll res = n;
   for (ll i = 1; i < r; ++i) {
-    res = res * (N - i) / (i + 1);
+    res = res * (n - i) / (i + 1);
   }
   return res;
 }

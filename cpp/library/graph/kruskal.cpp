@@ -1,5 +1,3 @@
-#include <bits/stdc++.h>
-using namespace std;
 // ============need input=================
 // MAX_N, MAX_E, V, E
 // output:
