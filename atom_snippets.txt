@@ -1,14 +1,24 @@
 '.source.cpp':
-  '--main':
-    'prefix':'--main'
+  'main':
+    'prefix':'main'
     'body':"""
     #include <bits/stdc++.h>
-    #define INF 5000000000000000000
+    // #include <atcoder/modint>
+    #define rng(a) a.begin(),a.end()
+    #define rrng(a) a.rbegin(),a.rend()
+    #define INF 2000000000000000000
     #define ll long long
+    #define ull unsigned long long
+    #define ld long double
     #define pll pair<ll, ll>
     using namespace std;
+    template<class T>bool chmax(T &a, const T &b) { if (a<b) { a=b; return 1; } return 0; }
+    template<class T>bool chmin(T &a, const T &b) { if (b<a) { a=b; return 1; } return 0; }
+    const double PI = 3.141592653589793;
 
     int main() {
+      ios::sync_with_stdio(false);
+      cin.tie(nullptr);
       $0
     }
 
@@ -17,10 +27,16 @@
     'prefix':'__topcoder'
     'body':"""
     #include <bits/stdc++.h>
-    #define INF 5000000000000000000
+    // #include <atcoder/modint>
+    #define rng(a) a.begin(),a.end()
+    #define rrng(a) a.rbegin(),a.rend()
+    #define INF 2000000000000000000
     #define ll long long
+    #define ld long double
     #define pll pair<ll, ll>
     using namespace std;
+    template<class T>bool chmax(T &a, const T &b) { if (a<b) { a=b; return 1; } return 0; }
+    template<class T>bool chmin(T &a, const T &b) { if (b<a) { a=b; return 1; } return 0; }
 
     class $1 {
     public:
@@ -115,3 +131,61 @@
     while $1:
         $2
       """
+
+'.source.rust':
+  'main':
+    'prefix':'main'
+    'body':"""
+    use proconio::input;
+    use std::cmp;
+
+    fn main() {
+        $0
+    }
+    """
+  'input!':
+    'prefix':'input!'
+    'body':"""
+    input! {
+        $1
+    }$2
+    """
+  'println!':
+    'prefix':'println!'
+    'body':"""
+    println!("{}", $1);$2
+    """
+  'for':
+    'prefix':'for'
+    'body':"""
+    for $1 in 0..$2 {
+        $3
+    }$4
+    """
+  'if':
+    'prefix':'if'
+    'body':"""
+    if $1 {
+        $2
+    }$3
+    """
+  'else':
+    'prefix':'else'
+    'body':"""
+    else {
+        $1
+    }$2
+    """
+  'while':
+    'prefix':'while'
+    'body':"""
+    while $1 {
+        $2
+    }$3
+    """
+  'min':
+    'prefix':'min'
+    'body':"""cmp::min($1)"""
+  'max':
+    'prefix':'max'
+    'body':"""cmp::max($1)"""
