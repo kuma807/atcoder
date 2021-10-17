@@ -9,14 +9,14 @@
 //2. グラフの矢印の向きをすべて逆向きにし(rG)、dfsをする(rdfs)その際 vs が大きい頂点からスタートする。行けるところまでを一つの連結成分とする。
 // ========================================
 
-//=============SCC============================
-struct SCC {
+//=============scc============================
+struct strongly_connected_components {
   vector<vector<ll>> G;
   vector<vector<ll>> rG;
   vector<ll> vs;
   vector<bool> used;
   vector<ll> cmp;
-  SCC(vector<vector<ll>> &connection) {
+  strongly_connected_components(vector<vector<ll>> &connection) {
     G = connection;
     rG = vector<vector<ll>>(connection.size());
     used = vector<bool>(connection.size(), false);

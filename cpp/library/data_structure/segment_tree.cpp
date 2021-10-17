@@ -24,6 +24,8 @@ ll replaceNode(ll a, ll b) {
   return b;
 }
 
+ll identity = 0;
+
 //=============segment_tree============================
 template <class T, T (*Marge)(T, T), T (*ReplaceNode)(T, T)>
 struct segment_tree {

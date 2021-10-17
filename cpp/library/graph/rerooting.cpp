@@ -73,7 +73,7 @@ struct Rerooting {
         rev_max.at(j) = connect_with_par(mp[{now, next}]);
         rev_max.at(j) = marge(rev_max.at(j), rev_max.at(j + 1));
       }
-      T M = 0;
+      T M = identity;
       for (ll j = 0; j < connection.at(now).size(); ++j) {
         ll next = connection.at(now).at(j);
         mp[{next, now}] = marge(M, rev_max.at(j + 1));

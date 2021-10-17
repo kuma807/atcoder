@@ -20,7 +20,6 @@ int main() {
   for (ll testcase = 0; testcase < T; ++testcase) {
     ll R, G, B;
     cin >> R >> G >> B;
-    ll oR = R, oG = G, oB = B;
     vector<ll> A = {R, G, B};
     sort(rng(A));
     R = A.at(0), G = A.at(1), B = A.at(2);
@@ -28,17 +27,16 @@ int main() {
     if ((G - R) % 3 == 0) {
       ll temp = (G - R) / 3;
       ll n = (R + temp * 2);
-      ans = min(ans, temp + n);
+      if (G - temp >= 0 && B - temp >= 0) {
+        ans = min(ans, temp + n);
+      }
     }
     if ((B - R) % 3 == 0) {
-      ll time = (B - R) / 3;
-      ll need = max(0ll, time - G);
-      ll temp = (need + 1) / 2;
-      R -= temp, G += temp * 2, B -= temp;
-      ll ntemp = (B - R) / 3;
-      ll n = R + ntemp * 2;
-      ans = min(ans, temp + ntemp + n);
-      R = oR, G = oG, B = oB;
+      ll temp = (B - R) / 3;
+      ll n = (R + temp * 2);
+      if (G - temp >= 0 && B - temp >= 0) {
+        ans = min(ans, temp + n);
+      }
     }
     if ((B - G) % 3 == 0) {
       ll time = (B - G) / 3;

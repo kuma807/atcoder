@@ -1,5 +1,5 @@
 // ============how it works=================
-//segment_tree_with_lazy_propagation<ll, marge, replaceNode> lseg(N, identity, lazey_identity);;
+//segment_tree_with_lazy_propagation<ll, marge, replaceNode> lseg(N, identity, lazey_identity);
   //ノード数Nの初期化
 
 //MAX_N
@@ -24,6 +24,9 @@ ll marge(ll a, ll b) {
 ll replaceNode(ll a, ll b) {
   return b;
 }
+
+ll identity = 0;
+ll lazey_identity = 0;
 
 //=============Segment_Tree_with_Lazy_Propagation====
 template <class T, T (*Marge)(T, T), T (*ReplaceNode)(T, T)>
