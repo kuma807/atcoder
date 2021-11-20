@@ -1,5 +1,5 @@
 // ============how it works=================
-//segment_tree_with_lazy_propagation<ll, marge, replaceNode> lseg(N, identity, lazey_identity);
+//segment_tree_with_lazy_propagation lseg(N);
   //ノード数Nの初期化
 
 //MAX_N
@@ -17,51 +17,35 @@
 //子ノードはdat[n〜]
 // ========================================
 
-ll marge(ll a, ll b) {
-  return min(a, b);
-}
-
-ll replaceNode(ll a, ll b) {
-  return b;
-}
-
-ll identity = 0;
-ll lazey_identity = 0;
-
 //=============Segment_Tree_with_Lazy_Propagation====
-template <class T, T (*Marge)(T, T), T (*ReplaceNode)(T, T)>
 struct segment_tree_with_lazy_propagation {
   int MAX_N;
   int n;
-  vector<T> dat;
-  vector<T> lazy;
-  T Identity;
-  T Lazey_Identity;
+  vector<ll> dat;
+  vector<ll> lazy;
 
-  segment_tree_with_lazy_propagation(ll n_, T identity, T lazey_identity) {
-    Identity = identity;
-    Lazey_Identity = lazey_identity;
+  segment_tree_with_lazy_propagation(ll n_) {
     n = 1;
     while (n < n_) {
       n *= 2;
     }
     MAX_N = n;
-    dat = vector<T>(2 * MAX_N - 1, Identity);//要変更
-    lazy = vector<T>(2 * MAX_N - 1, Lazey_Identity);//要変更
+    dat = vector<ll>(2 * MAX_N - 1, pow(2, 31) - 1);//要変更
+    lazy = vector<ll>(2 * MAX_N - 1, INF);//要変更
   }
 
   void eval(ll k, ll l, ll r) {
-    if (lazy.at(k) != Lazey_Identity) {
-      dat.at(k) = ReplaceNode(dat.at(k), lazy.at(k));//要変更
+    if (lazy.at(k) != INF) {
+      dat.at(k) = lazy.at(k);//要変更
       if (r - l > 1) {
-        lazy.at(k * 2 + 1) = ReplaceNode(lazy.at(k * 2 + 1), lazy.at(k));//要変更
-        lazy.at(k * 2 + 2) = ReplaceNode(lazy.at(k * 2 + 2), lazy.at(k));//要変更
+        lazy.at(k * 2 + 1) = lazy.at(k);//要変更
+        lazy.at(k * 2 + 2) = lazy.at(k);//要変更
       }
-      lazy.at(k) = Lazey_Identity;//要変更
+      lazy.at(k) = INF;//要変更
     }
   }
 
-  void update(ll a, ll b, T plus, ll k = -1, ll l = -1, ll r = -1) {
+  void update(ll a, ll b, ll plus, ll k = -1, ll l = -1, ll r = -1) {
     if (k == -1 && l == -1 && r == -1) {
       k = 0, l = 0, r = n;
     }
@@ -70,23 +54,23 @@ struct segment_tree_with_lazy_propagation {
       return;
     }
     if (a <= l && r <= b) {
-      lazy.at(k) = ReplaceNode(lazy.at(k), plus);//要変更
+      lazy.at(k) = plus;//要変更
       eval(k, l, r);//子供のlazyを更新する必要がある
     }
     else {
       eval(k, l, r);//updateで使う子供のlazeとdat.at(k)の更新
       update(a, b, plus, k * 2 + 1, l, (l + r) / 2);
       update(a, b, plus, k * 2 + 2, (l + r) / 2, r);
-      dat.at(k) = Marge(dat.at(2 * k + 1), dat.at(2 * k + 2));//要変更
+      dat.at(k) = min(dat.at(2 * k + 1), dat.at(2 * k + 2));//要変更
     }
   }
 
-  T query(ll a, ll b, ll k = -1, ll l = -1, ll r = -1) {
+  ll query(ll a, ll b, ll k = -1, ll l = -1, ll r = -1) {
     if (k == -1 && l == -1 && r == -1) {
       k = 0, l = 0, r = n;
     }
     if (r <= a || b <= l) {
-      return Identity;//要変更
+      return INF;//要変更
     }
     eval(k, l, r);//dat.at(k)と子供のlazy更新のためreturn datとqueryに必要
     if (a <= l && r <= b) {
@@ -95,7 +79,7 @@ struct segment_tree_with_lazy_propagation {
     else {
       ll vl = query(a, b, k * 2 + 1, l, (l + r) / 2);
       ll vr = query(a, b, k * 2 + 2, (l + r) / 2, r);
-      return Marge(vl, vr);//要変更
+      return min(vl, vr);//要変更
     }
   }
 };

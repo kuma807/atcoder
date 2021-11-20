@@ -1,5 +1,5 @@
 // ============how it works=================
-//segment_tree<ll, marge, replaceNode> seg(N, identity);
+//segment_tree seg(N);
   //ノード数Nの初期化
 
 //MAX_N
@@ -16,39 +16,26 @@
 //子ノードはdat[n〜]
 // ========================================
 
-ll marge(ll a, ll b) {
-  return a + b;
-}
-
-ll replaceNode(ll a, ll b) {
-  return b;
-}
-
-ll identity = 0;
-
 //=============segment_tree============================
-template <class T, T (*Marge)(T, T), T (*ReplaceNode)(T, T)>
 struct segment_tree {
   int MAX_N;
   int nn;
   vector<ll> dat;
-  T Identity;
-  segment_tree(ll n_, T identity) {
-    Identity = identity;
+  segment_tree(ll n_) {
     nn = 1;
     while (nn < n_) {
       nn *= 2;
     }
     MAX_N = nn;
-    dat = vector<ll>(2 * MAX_N - 1, Identity);
+    dat = vector<ll>(2 * MAX_N - 1, 0);
   }
 
   void update(ll k, ll a) {
     k += nn - 1;
-    dat.at(k) = ReplaceNode(dat.at(k), a);//要変更
+    dat.at(k) = a;//要変更
     while (k > 0) {
       k = (k - 1) / 2;
-      dat.at(k) = ReplaceNode(dat.at(k), Marge(dat.at(k * 2 + 1), dat.at(k * 2 + 2)));//要変更
+      dat.at(k) = __gcd(dat.at(k * 2 + 1), dat.at(k * 2 + 2));//要変更
     }
   }
 
@@ -57,7 +44,7 @@ struct segment_tree {
       k = 0, l = 0, r = nn;
     }
     if (r <= a || b <= l) {
-      return Identity;//要変更
+      return 0;//要変更
     }
     if (a <= l && r <= b) {
       return dat.at(k);
@@ -65,7 +52,7 @@ struct segment_tree {
     else {
       ll vl = query(a, b, k * 2 + 1, l, (l + r) / 2);
       ll vr = query(a, b, k * 2 + 2, (l + r) / 2, r);
-      return Marge(vl, vr);//要変更
+      return __gcd(vl, vr);//要変更
     }
   }
 };
