@@ -1,24 +1,38 @@
-import glob
+import concurrent.futures
 import subprocess
-import re
-import os
 import time
 
-input_path = []
-output_path = []
-N = 1
-for i in range(1, N + 1):
-    input_path.append(f'testcase/input{i}.txt')
-    output_path.append(f'testcase/output{i}.txt')
-for i in range(len(input_path)):
-    start = time.time()
-    output = subprocess.check_output(f"cat {input_path[i]} | ./compile.sh", shell=True).decode('utf-8')
-    print("time: ", time.time() - start)
-    with open(output_path[i]) as f:
-        ans = f.read()
-        if ans != output:
-            print(f"WA on testcase {input_path[i]} {output_path[i]}")
-            print("ans")
-            print(ans)
-            print("output")
-            print(output)
+#コードをコンパイルする(pythonなどの場合不要)
+subprocess.run(f"g++ -o ../src/atcoder ../src/atcoder.cpp -std=c++17", shell=True)#要変更
+print("input number test")
+N = int(input())
+
+start = time.time()
+
+#パソコンのプロセス数
+max_process = 12#要変更
+proc_list = []
+for i in range(N):
+    S = str(i)
+    while len(S) != 4:
+        S = '0' + S
+    #自分のコードを実行するためのコマンド
+    proc = subprocess.Popen(f"cargo run --release --bin tester ../src/atcoder < in/{S}.txt > out/{S}.txt 2> score/{S}.txt", shell=True)#要変更
+    proc_list.append(proc)
+    if (i + 1) % max_process == 0 or (i + 1) == N:
+        for subproc in proc_list:
+            subproc.wait()
+        proc_list = []
+
+print("time: ", time.time() - start)
+
+sum_score = 0
+for i in range(N):
+    S = str(i)
+    while len(S) != 4:
+        S = '0' + S
+    with open(f"score/{S}.txt") as f:
+        lines = f.readlines()
+        score = int(lines[-1][8:-1])
+        sum_score += score
+print("average =", sum_score / N)
