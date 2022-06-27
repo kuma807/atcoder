@@ -47,6 +47,23 @@ stoi(A)
 //move
 vector<vector<ll>> moves = {{1, 0}, {0, 1}, {1, 1}};
 
+//8方向をチェックする
+for (ll i = 0; i < h; ++i) {
+  for (ll j = 0; j < w; ++j) {
+    ll a = i * w + j;
+    for (ll k = -1; k <= 1; ++k) {
+      for (ll l = -1; l <= 1; ++l) {
+        if ((0 <= (i + k)) && ((i + k) < h) && (0 <= (j + l)) && ((j + l) < w)) {
+          ll b = (i + k) * w + (j + l);
+          if (land.at(i + k).at(j + l) == land.at(i).at(j)) {
+            uf.unite(a, b);
+          }
+        }
+      }
+    }
+  }
+}
+
 //エラーをファイルに出力
 ./compile.sh 2> error.txt
 
