@@ -1,17 +1,17 @@
 //https://sen-comp.hatenablog.com/entry/2020/03/12/145742
 
-const double EPS = 1e-10;
+const ld EPS = 1e-10;
 //a > 0ならば+1, a == 0ならば0, a < 0ならば-1　を返す。　基本的にEPS込みの評価はこれで行う。
 //不等式は、加減算に直してこれに適用する。
-int sgn(const double a) {
+int sgn(const ld a) {
 	return (a < -EPS ? -1 : (a > EPS ? +1 : 0));
 }
 
 struct Point {
 	//2次元ベクトルのクラス
 
-	double x, y;
-	Point(double _x, double _y) {
+	ld x, y;
+	Point(ld _x, ld _y) {
 		x = _x, y = _y;
 	}
 	Point() {
@@ -30,10 +30,10 @@ struct Point {
 	Point operator- (const Point& b) const {
 		return{ x - b.x, y - b.y };
 	}
-	Point operator* (const double b) const {
+	Point operator* (const ld b) const {
 		return{ x * b, y * b };
 	}
-	Point operator/ (const double b) const {
+	Point operator/ (const ld b) const {
 		return{ x / b, y / b };
 	}
 	Point operator+= (const Point& b) {
@@ -44,11 +44,11 @@ struct Point {
 		x -= b.x, y -= b.y;
 		return *this;
 	}
-	Point operator*= (const double b) {
+	Point operator*= (const ld b) {
 		x *= b, y *= b;
 		return *this;
 	}
-	Point operator/= (const double b) {
+	Point operator/= (const ld b) {
 		x /= b, y /= b;
 		return *this;
 	}
@@ -56,20 +56,20 @@ struct Point {
 		return b.x == x && b.y == y;
 	}
 
-	double lengthSquare() const {
+	ld lengthSquare() const {
 		return (x * x + y * y);
 	}
-	double length() const {
+	ld length() const {
 		return std::sqrt(lengthSquare());
 	}
-	double dot(const Point& b) const {
+	ld dot(const Point& b) const {
 		return x * b.x + y * b.y;
 	}
-	double cross(const Point& b) const {
+	ld cross(const Point& b) const {
 		//Generally, cross product is vector, but in 2D, cross product is also scalar.
 		return x * b.y - y * b.x;
 	}
-	double distanceFrom(const Point& b) const {
+	ld distanceFrom(const Point& b) const {
 		return std::sqrt((x - b.x) * (x - b.x) + (y - b.y) * (y - b.y));
 	}
 	Point normalized() const {
@@ -83,17 +83,17 @@ struct Point {
 		return{ -normalized().y, normalized().x };
 	}
 	//(0, 0)中心にarg(弧度法)回転した座標
-	Point rotation(double arg) const {
-		double cs = cos(arg), sn = sin(arg);
+	Point rotation(ld arg) const {
+		ld cs = cos(arg), sn = sin(arg);
 		return Point(x * cs - y * sn, x * sn + y * cs);
 	}
 	//(0, 0)中心の円上に乗ってるとしたときの、偏角
-	double angle() const {
+	ld angle() const {
 		return atan2(y, x);
 	}
 };
 
-inline Point operator*(double a, const Point& b) {
+inline Point operator*(ld a, const Point& b) {
 	return{ b.x * a, b.y * a };
 }
 const Point error_val = { 114514.0, -191981.0 };
@@ -133,7 +133,7 @@ struct Line {
 	}
 
 	//ax+by+c=0
-	Line(const double a, const double b, const double c) {
+	Line(const ld a, const ld b, const ld c) {
 		if (sgn(a) == 0 && sgn(b) == 0) {
 			assert(-1);
 		}
@@ -191,4 +191,41 @@ pair<bool, Point> segmentIntersection(const Segment& s1, const Segment& s2) {
 
 	}
 	return make_pair(false, error_val);
+}
+
+//線分と点の最短距離を求める
+ld calc_seg_point_dist(const Segment &line, const Point &point)
+{
+    ld x0 = point.x, y0 = point.y;
+    ld x1 = line.begin.x, y1 = line.begin.y;
+    ld x2 = line.end.x, y2 = line.end.y;
+
+    ld a = x2 - x1;
+    ld b = y2 - y1;
+    ld a2 = a * a;
+    ld b2 = b * b;
+    ld r2 = a2 + b2;
+    ld tt = -(a * (x1 - x0) + b * (y1 - y0));
+
+    if (tt < 0)
+        return sqrt((x1 - x0) * (x1 - x0) + (y1 - y0) * (y1 - y0));
+    else if (tt > r2)
+        return sqrt((x2 - x0) * (x2 - x0) + (y2 - y0) * (y2 - y0));
+
+    ld f1 = a * (y1 - y0) - b * (x1 - x0);
+    return sqrt((f1 * f1) / r2);
+}
+
+//線分と線分の最短距離を求める
+ld calc_seg_seg_dist(const Segment &line1, const Segment &line2)
+{
+	if (segmentIntersection(line1, line2).first) {
+	  return 0;
+	}
+  ld res = INF;
+  chmin(res, calc_seg_point_dist(line1, line2.begin));
+  chmin(res, calc_seg_point_dist(line1, line2.end));
+  chmin(res, calc_seg_point_dist(line2, line1.begin));
+  chmin(res, calc_seg_point_dist(line2, line1.end));
+  return res;
 }
