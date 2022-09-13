@@ -8,10 +8,12 @@
 struct union_find {
   vector<ll> par;
   vector<ll> tree_rank;
+  vector<ll> num;
 
   union_find(ll n)
   {
     par = vector<ll>(n);
+    num = vector<ll>(n, 1);
     tree_rank = vector<ll>(n);
     for (ll i = 0; i < n; ++i)
     {
@@ -32,6 +34,10 @@ struct union_find {
     }
   }
 
+  ll get_num(ll x) {
+    return num.at(find(x));
+  }
+
   void unite(ll x, ll y)
   {
     x = find(x);
@@ -43,10 +49,12 @@ struct union_find {
     if (tree_rank.at(x) < tree_rank.at(y))
     {
       par.at(x) = y;
+      num.at(y) = num.at(x) + num.at(y);
     }
     else
     {
       par.at(y) = x;
+      num.at(x) = num.at(x) + num.at(y);
       if (tree_rank.at(x) == tree_rank.at(y))
       {
         tree_rank.at(x)++;
