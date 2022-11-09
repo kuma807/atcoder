@@ -21,10 +21,12 @@
 struct segment_tree_with_lazy_propagation {
   int MAX_N;
   int n;
+  ll N;
   vector<ll> dat;
   vector<ll> lazy;
 
   segment_tree_with_lazy_propagation(ll n_) {
+    N = n_;
     n = 1;
     while (n < n_) {
       n *= 2;
@@ -46,6 +48,7 @@ struct segment_tree_with_lazy_propagation {
   }
 
   void update(ll a, ll b, ll plus, ll k = -1, ll l = -1, ll r = -1) {
+    assert(0 <= a && a <= N && 0 <= b && b <= N);
     if (k == -1 && l == -1 && r == -1) {
       k = 0, l = 0, r = n;
     }
@@ -66,6 +69,7 @@ struct segment_tree_with_lazy_propagation {
   }
 
   ll query(ll a, ll b, ll k = -1, ll l = -1, ll r = -1) {
+    assert(0 <= a && a <= N && 0 <= b && b <= N);
     if (k == -1 && l == -1 && r == -1) {
       k = 0, l = 0, r = n;
     }

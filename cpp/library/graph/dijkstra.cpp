@@ -16,8 +16,9 @@
 
 struct edge {ll to, cost;};
 //=============dijkstra============================
-vector<ll> dijkstra(ll s, ll V, vector<vector<edge>>& G)
+vector<ll> dijkstra(ll s, vector<vector<edge>>& G)
 {
+  ll V = G.size();
   vector<ll> d(V, INF);
   typedef pair<ll, ll> P;// first は最短距離　second は頂点の番号
   priority_queue<P, vector<P>, greater<P>> que;
