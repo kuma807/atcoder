@@ -19,9 +19,11 @@
 //=============segment_tree============================
 struct segment_tree {
   int MAX_N;
+  ll N;
   int nn;
   vector<ll> dat;
   segment_tree(ll n_) {
+    N = n_;
     nn = 1;
     while (nn < n_) {
       nn *= 2;
@@ -31,6 +33,7 @@ struct segment_tree {
   }
 
   void update(ll k, ll a) {
+    assert(0 <= k && k < N);
     k += nn - 1;
     dat.at(k) = a;//要変更
     while (k > 0) {
@@ -40,6 +43,7 @@ struct segment_tree {
   }
 
   ll query(ll a, ll b, ll k = -1, ll l = -1, ll r = -1) {
+    assert(0 <= a && a < N && 0 <= b && b <= N);
     if (k == -1 && l == -1 && r == -1) {
       k = 0, l = 0, r = nn;
     }

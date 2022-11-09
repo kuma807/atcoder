@@ -69,7 +69,7 @@ struct segment_tree_with_lazy_propagation {
   }
 
   ll query(ll a, ll b, ll k = -1, ll l = -1, ll r = -1) {
-    assert(0 <= a && a <= N && 0 <= b && b <= N);
+    assert(0 <= a && a < N && 0 <= b && b <= N);
     if (k == -1 && l == -1 && r == -1) {
       k = 0, l = 0, r = n;
     }
