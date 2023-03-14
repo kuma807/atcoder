@@ -1,17 +1,21 @@
 // ============how it works=================
 //segment_tree seg(N);
   //ノード数Nの初期化
+  //計算量 O(N)
 
 //MAX_N
   //最大ノード数
 
 // update(ll k, ll a)
   //k番目の値をaに更新
+  //計算量 O(log(N))
 
 // query(ll a, ll b, ll k, ll l, ll r)
   //[a, b)の最小値を求めるとき
     //query(a, b)とする
 //a,b, k, l, r  はすべて0indexである
+  //計算量 O(log(N))
+
 
 //子ノードはdat[n〜]
 // ========================================
