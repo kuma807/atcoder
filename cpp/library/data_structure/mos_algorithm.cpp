@@ -133,7 +133,7 @@ struct mos_algorithm {
     for (ll i = 0; i < query_vec.size(); ++i) {
       query_vec.at(i).block = query_vec.at(i).l / B;
     }
-    sort(rng(query_vec), [&](query_struct a, query_struct b) {
+    sort(rng(query_vec), [&](query_struct &a, query_struct &b) {
       //要変更
       //queryのソート方法
       ll ai = a.block, bi = b.block;
