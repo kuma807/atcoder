@@ -41,7 +41,10 @@ vector<vector<ll>> modmatmul(vector<vector<ll>>& a, vector<vector<ll>>& b, ll mo
     for (ll colom = 0; colom < b.at(0).size(); ++colom) {
       ll sum = 0;
       for (ll i = 0; i < b.size(); ++i) {
-        sum = (sum + a.at(row).at(i) * b.at(i).at(colom)) % mod;
+        sum = (sum + a.at(row).at(i) * b.at(i).at(colom));
+        if (sum >= mod) {
+          sum %= mod;
+        }
       }
       res.at(row).at(colom) = sum;
     }
