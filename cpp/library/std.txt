@@ -1,3 +1,10 @@
+//cin最後まで
+while(cin >> s) {
+  cout << s << endl;
+}
+
+//座標90度回転
+
 //cout精度
 cout << fixed << setprecision(15);
 
