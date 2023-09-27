@@ -1,5 +1,5 @@
 // ============need input=================
-// SCC scc(connection);
+// strongly_connected_components scc(connection);
 //scc.cmp.at(i)
   //iがどの強連結成分に属するか
 //O(V + E)
