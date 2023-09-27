@@ -1,9 +1,27 @@
 // ============how it works=================
-//Rerooting<ll, marge, connect_with_par> rerooting(connection, identity);
+//Rerooting<ll, marge, connect_with_par> rerooting(connection, rerooting_identity);
 
 //rerooting.get(par, root)
   //parを親、rootを根とした木の答えを求める(parは木に含まれない)
 // ========================================
+
+struct HashPair {
+  //注意 constがいる
+  template<class T1, class T2>
+  size_t operator()(const pair<T1, T2> &p) const {
+    //first分をハッシュ化する
+    auto hash1 = hash<T1>{}(p.first);
+
+    //second分をハッシュ化する
+    auto hash2 = hash<T2>{}(p.second);
+
+    //重複しないようにハッシュ処理
+    size_t seed = 0;
+    seed ^= hash1 + 0x9e3779b9 + (seed << 6) + (seed >> 2);
+    seed ^= hash2 + 0x9e3779b9 + (seed << 6) + (seed >> 2);
+    return seed;
+  }
+};
 
 ll marge(ll a, ll b) {
   return max(a, b);
@@ -13,21 +31,16 @@ ll connect_with_par(ll a) {
   return a + 1;
 }
 
-ll identity = 0;
+ll rerooting_identity = 0;
 
 //=============Rerooting===========================
 template <class T, T (*marge)(T, T), T (*connect_with_par)(T)>
 struct Rerooting {
-  vector<vector<ll>> connection;
-  ll N;
-  vector<ll> par, number;
-  map<pll, T> mp;
-  T identity;
+  unordered_map<pll, T, HashPair> mp;
 
-  Rerooting(vector<vector<ll>> &Connetion, T Identity) {
-    identity = Identity;
-    connection = Connetion;
-    N = Connetion.size();
+  Rerooting(vector<vector<ll>> &connection, T rerooting_identity) {
+    vector<ll> par, number;
+    ll N = connection.size();
     par = vector<ll>(N, -1);
     //0を根とした木のdfs順(num)を求める
     stack<ll> st;
@@ -53,7 +66,7 @@ struct Rerooting {
     //0を頂点とした木の答えを求める
     for (ll i = N - 1; i >= 0; --i) {
       ll now = number.at(i);
-      T M = identity;
+      T M = rerooting_identity;
       for (ll j = 0; j < connection.at(now).size(); ++j) {
         ll next = connection.at(now).at(j);
         if (next == par.at(now)) {
@@ -67,13 +80,13 @@ struct Rerooting {
     //他の頂点を根とした木の答えを求める
     for (ll i = 0; i < N; ++i) {
       ll now = number.at(i);
-      vector<T> rev_max(connection.at(now).size() + 1, identity);
+      vector<T> rev_max(connection.at(now).size() + 1, rerooting_identity);
       for (ll j = connection.at(now).size() - 1; j >= 0; --j) {
         ll next = connection.at(now).at(j);
         rev_max.at(j) = connect_with_par(mp[{now, next}]);
         rev_max.at(j) = marge(rev_max.at(j), rev_max.at(j + 1));
       }
-      T M = identity;
+      T M = rerooting_identity;
       for (ll j = 0; j < connection.at(now).size(); ++j) {
         ll next = connection.at(now).at(j);
         mp[{next, now}] = marge(M, rev_max.at(j + 1));

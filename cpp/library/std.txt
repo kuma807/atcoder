@@ -3,8 +3,6 @@ while(cin >> s) {
   cout << s << endl;
 }
 
-//座標90度回転
-
 //cout精度
 cout << fixed << setprecision(15);
 
@@ -51,26 +49,6 @@ atan2(y, x)//[-π, π]で返す(long double)
 to_string(A)
 stoi(A)
 
-//move
-vector<vector<ll>> moves = {{1, 0}, {0, 1}, {1, 1}};
-
-//8方向をチェックする
-for (ll i = 0; i < h; ++i) {
-  for (ll j = 0; j < w; ++j) {
-    ll a = i * w + j;
-    for (ll k = -1; k <= 1; ++k) {
-      for (ll l = -1; l <= 1; ++l) {
-        if ((0 <= (i + k)) && ((i + k) < h) && (0 <= (j + l)) && ((j + l) < w)) {
-          ll b = (i + k) * w + (j + l);
-          if (land.at(i + k).at(j + l) == land.at(i).at(j)) {
-            uf.unite(a, b);
-          }
-        }
-      }
-    }
-  }
-}
-
 //エラーをファイルに出力
 ./compile.sh 2> error.txt
 
@@ -81,3 +59,23 @@ clock_t end = clock();
 if ((double)(end - start) / CLOCKS_PER_SEC > time) {
   break;
 }
+
+//unordered_map<pll, ll> mp
+struct HashPair {
+  //注意 constがいる
+  template<class T1, class T2>
+  size_t operator()(const pair<T1, T2> &p) const {
+    //first分をハッシュ化する
+    auto hash1 = hash<T1>{}(p.first);
+
+    //second分をハッシュ化する
+    auto hash2 = hash<T2>{}(p.second);
+
+    //重複しないようにハッシュ処理
+    size_t seed = 0;
+    seed ^= hash1 + 0x9e3779b9 + (seed << 6) + (seed >> 2);
+    seed ^= hash2 + 0x9e3779b9 + (seed << 6) + (seed >> 2);
+    return seed;
+  }
+};
+unordered_map<pll, T, HashPair> mp;
